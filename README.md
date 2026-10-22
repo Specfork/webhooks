@@ -14,6 +14,7 @@ derived_from:
 
 Outbound HTTP callbacks. The requiring spec names the events and scopes; this spec delivers them.
 Signing follows the Standard Webhooks scheme.
+Not affiliated with or endorsed by Cal.com, Inc. The name is used only to credit the source.
 
 | Area | Prefix | Covers |
 |---|---|---|
