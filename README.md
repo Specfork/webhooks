@@ -3,6 +3,7 @@ specfork: 1
 name: "@specfork/webhooks"
 summary: Signed, retried, SSRF-safe outbound webhooks for events the requiring spec defines.
 license: CC-BY-4.0
+tags: [base, integrations]
 derived_from:
   repo: https://github.com/calcom/cal.com
   commit: 0f19cc46ef6b6426ee398c670575b3c96be7af9e
