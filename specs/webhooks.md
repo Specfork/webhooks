@@ -10,7 +10,7 @@ Send signed HTTP callbacks for events an app defines, reliably and safely.
 
 | ID | Requirement | Verified by |
 |---|---|---|
-| HOOK-1 | Subscription: `{id, url, events [names defined by the requiring spec], active (default true), secret (generated, ≥ 256 bits, shown once), scope (owner set by the requiring spec), template?}`. `(scope, url)` unique. | duplicate url in scope → refused |
+| HOOK-1 | Subscription: `{id, url, events [names defined by the requiring spec], active (default true), secret (generated, ≥ 256 bits, shown once), scope (owner set by the requiring spec), template?, description? (≤ 200 chars), filters? (fields the requiring spec defines)}`. `(scope, url)` unique. | duplicate url in scope → refused |
 | HOOK-2 | URL check on save and before each send: `https` only; host must not resolve to loopback, private, link-local or metadata addresses. | `https://169.254.169.254` → refused |
 | HOOK-3 | Delivery: `POST`, JSON body `{id (delivery id), event, created_at, data}`, headers `Webhook-Id`, `Webhook-Timestamp` (unix s), `Webhook-Signature: v1,<base64 HMAC-SHA256(secret, id + "." + timestamp + "." + body)>`. | receiver verifies signature with secret |
 | HOOK-4 | Redirects not followed; timeout 10 s; any non-2xx or timeout is a failure. | receiver 500 → retried |
@@ -21,6 +21,9 @@ Send signed HTTP callbacks for events an app defines, reliably and safely.
 | HOOK-9 | "Send test" posts a sample of a chosen event, returns the receiver's status, and is subject to HOOK-2. | test → status shown |
 | HOOK-10 | Events are sent at least once and in no guaranteed order; receivers dedupe by `id`. | manual: documented for receivers |
 | HOOK-11 | Time-based events (e.g. "starts in") are stored as scheduled deliveries and cancelled when the requiring spec says so. | manual: see requiring spec |
+| HOOK-12 | Event patterns: `prefix.*` matches every event starting with `prefix.`, `*` matches all; events added later are included. | subscribe `booking.*`, new `booking.x` → delivered |
+| HOOK-13 | `filters` limit deliveries to events whose data match every given field (e.g. `inbox_ids`); unknown filter fields → save refused. | filter inbox 1, event for inbox 2 → not sent |
+| HOOK-14 | Sends per subscription are limited to 10 at once and 100 per second; excess is queued, never dropped. | 500 events in 1 s → all delivered within ~5 s |
 
 ## Out of scope
 
