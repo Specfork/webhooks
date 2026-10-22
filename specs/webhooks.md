@@ -24,6 +24,7 @@ Send signed HTTP callbacks for events an app defines, reliably and safely.
 | HOOK-12 | Event patterns: `prefix.*` matches every event starting with `prefix.`, `*` matches all; events added later are included. | subscribe `booking.*`, new `booking.x` → delivered |
 | HOOK-13 | `filters` limit deliveries to events whose data match every given field (e.g. `inbox_ids`); unknown filter fields → save refused. | filter inbox 1, event for inbox 2 → not sent |
 | HOOK-14 | Sends per subscription are limited to 10 at once and 100 per second; excess is queued, never dropped. | 500 events in 1 s → all delivered within ~5 s |
+| HOOK-15 | An event whose data lacks a field a subscription filters on is not sent to that subscription. | filter `inbox_ids`, contact event → not sent |
 
 ## Out of scope
 
